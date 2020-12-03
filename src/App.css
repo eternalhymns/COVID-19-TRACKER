@@ -1,3 +1,12 @@
-*{
-  margin :0;
+* {
+  margin: 0;
+}
+.app__header {
+  /* By default, 'display:flex' pushes everything into a row */
+  display: flex;
+  /* flex-direction: column;  Use if you want the contentes arranged column and occupy full width */
+  /* Inside this container, each contents spaced */
+  justify-content: space-between;
+  align-items: center; /*the text drops down a little bit */
+  margin-bottom: 20px; /*margine: outside of the element  padding: inside of the element*/
 }
