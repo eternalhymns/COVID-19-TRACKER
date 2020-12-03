@@ -10,3 +10,13 @@
   align-items: center; /*the text drops down a little bit */
   margin-bottom: 20px; /*margine: outside of the element  padding: inside of the element*/
 }
+.app__stats{
+  display:flex;
+  justify-content: space-between;
+}
+
+body{
+  background-color: #f5f6fa; 
+  
+
+}
