@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import Table from './Table'
 import {
   MenuItem,
   FormControl,
@@ -16,6 +17,18 @@ function App() {
   const [countries, setCountries] = useState([]); //the initial value is '[]'
   const [country, setCountry] = useState("worldwide"); //To remember which option i selected. By default, 'worldwide' selected
   const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
+
+
+  useEffect(() => {
+    //runs when App.js first execute.
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  },[]); // you have to write down [] as a parameter. keep in mind!!!
+  
   useEffect(() => {
     // The code inside here will run once
     // when the app.js component loads and not again
@@ -29,6 +42,7 @@ function App() {
             name: country.country, //United Kingdom, United States
             value: country.countryInfo.iso2, //UK, USA, FR
           }));
+          setTableData(data);
           setCountries(countries);
         });
     };
@@ -87,9 +101,21 @@ function App() {
         {/*Title + Select input dropdown field */}
 
         <div className="app__stats">
-          <InfoBox title="Coronavirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases}></InfoBox>
-          <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}></InfoBox>
-          <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}></InfoBox>
+          <InfoBox
+            title="Coronavirus Cases"
+            cases={countryInfo.todayCases}
+            total={countryInfo.cases}
+          ></InfoBox>
+          <InfoBox
+            title="Recovered"
+            cases={countryInfo.todayRecovered}
+            total={countryInfo.recovered}
+          ></InfoBox>
+          <InfoBox
+            title="Deaths"
+            cases={countryInfo.todayDeaths}
+            total={countryInfo.deaths}
+          ></InfoBox>
           {/*InfoBox title="Coronavirus cases" */}
           {/*InfoBox title="Recovery" */}
           {/*InfoBox title="" */}
@@ -100,7 +126,8 @@ function App() {
       </div>
       <Card className="app_right">
         <CardContent>
-          {/*Table*/}
+          {/* in the table, i will parse  */}
+          <Table countries={tableData} />
           <h3>Live Cases by Country</h3>
           {/*Graph */}
           <h3>Worldwide new cases</h3>
