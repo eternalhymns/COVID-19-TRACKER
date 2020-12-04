@@ -4,10 +4,10 @@ import "./Table.css";
 function Table({ countries }) {
   return (
     <div className="table">
-      {countries.map(({ country, cases }) => (
+      {countries.map(({country, cases}) => (
         <tr>
           <td>{country}</td>
-          <strong>{cases}</strong>
+          <td><strong>{cases}</strong></td>
         </tr>
       ))}
     </div>
@@ -15,3 +15,4 @@ function Table({ countries }) {
 }
 
 export default Table;
+

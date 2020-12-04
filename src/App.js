@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import Table from './Table'
+import Table from "./Table";
+import { sortData } from "./util";
 import {
   MenuItem,
   FormControl,
@@ -19,7 +20,6 @@ function App() {
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
 
-
   useEffect(() => {
     //runs when App.js first execute.
     fetch("https://disease.sh/v3/covid-19/all")
@@ -27,8 +27,8 @@ function App() {
       .then((data) => {
         setCountryInfo(data);
       });
-  },[]); // you have to write down [] as a parameter. keep in mind!!!
-  
+  }, []); // you have to write down [] as a parameter. keep in mind!!!
+
   useEffect(() => {
     // The code inside here will run once
     // when the app.js component loads and not again
@@ -42,7 +42,8 @@ function App() {
             name: country.country, //United Kingdom, United States
             value: country.countryInfo.iso2, //UK, USA, FR
           }));
-          setTableData(data);
+          const sortedData = sortData(data);
+          setTableData(sortedData);
           setCountries(countries);
         });
     };
