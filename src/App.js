@@ -1,13 +1,21 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { MenuItem, FormControl, Select } from "@material-ui/core";
-import InfoBox from "./InfoBox"
+import {
+  MenuItem,
+  FormControl,
+  Select,
+  Card,
+  CardContent,
+} from "@material-ui/core";
+import InfoBox from "./InfoBox";
+import Map from "./Map";
 function App() {
   // STATE = How to write variable in REACT >>>>
   // REQUEST URL: https://disease.sh/v3/covid-19/countries
   // USEEFFECT = Runs a piece of code based on given condition
   const [countries, setCountries] = useState([]); //the initial value is '[]'
   const [country, setCountry] = useState("worldwide"); //To remember which option i selected. By default, 'worldwide' selected
+  const [countryInfo, setCountryInfo] = useState({});
   useEffect(() => {
     // The code inside here will run once
     // when the app.js component loads and not again
@@ -30,48 +38,74 @@ function App() {
     const countryCode = event.target.value;
     console.log(countryCode);
     setCountry(countryCode);
+    // https://disease.sh/v3/covid-19/all   -> worldwide
+    // https://disease.sh/v3/covid-19/countries/[COUNTRY_CODE] -> selected country
+    // worldwide라면 url 주소는 다음과 같고, 아니라면 컨츄리코드가 달린 url로.
+    const url =
+      countryCode === "worldwide"
+        ? "https://disease.sh/v3/covid-19/all"
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+    await fetch(url) //await 하고, go to the url and fetch!
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
   };
+
+  console.log("COUNTRY INFO >>>", countryInfo);
   return (
     <div className="app">
-      {/*Header */}
-      <div className="app__header">
-        {/*BEM convention*/}
-        <h1>COVID-19 TRACKER</h1>
-        {/* FormControl, Select..etc... matarial ui offers!! */}
-        <FormControl className="app__dropdown">
-          {/* Select has a bunch of attributes */}
-          <Select variant="outlined" onChange={onCountryChange} value={country}>
-            {/* Loop through all the countries and show a drop down list of the options */}
-            <MenuItem value="worldwide">Worldwide</MenuItem>
-            {
-              // every country return Item. in this case, RETURN MenuItem
-              countries.map((country) => (
-                <MenuItem value={country.value}>{country.name}</MenuItem>
-              ))
-            }
-            {/* <MenuItem value="worldwide">Worldwide</MenuItem>
+      <div className="app__left">
+        {/*Header */}
+        <div className="app__header">
+          {/*BEM convention*/}
+          <h1>COVID-19 TRACKER</h1>
+          {/* FormControl, Select..etc... matarial ui offers!! */}
+          <FormControl className="app__dropdown">
+            {/* Select has a bunch of attributes */}
+            <Select
+              variant="outlined"
+              onChange={onCountryChange}
+              value={country}
+            >
+              {/* Loop through all the countries and show a drop down list of the options */}
+              <MenuItem value="worldwide">Worldwide</MenuItem>
+              {
+                // every country return Item. in this case, RETURN MenuItem
+                countries.map((country) => (
+                  <MenuItem value={country.value}>{country.name}</MenuItem>
+                ))
+              }
+              {/* <MenuItem value="worldwide">Worldwide</MenuItem>
             <MenuItem value="worldwide">Option 2</MenuItem>
             <MenuItem value="worldwide">Option 3</MenuItem>
             <MenuItem value="worldwide">Yoooo</MenuItem> */}
-          </Select>
-        </FormControl>
+            </Select>
+          </FormControl>
+        </div>
+
+        {/*Title + Select input dropdown field */}
+
+        <div className="app__stats">
+          <InfoBox title="Coronavirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases}></InfoBox>
+          <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}></InfoBox>
+          <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}></InfoBox>
+          {/*InfoBox title="Coronavirus cases" */}
+          {/*InfoBox title="Recovery" */}
+          {/*InfoBox title="" */}
+        </div>
+
+        {/*Map */}
+        <Map />
       </div>
-
-      {/*Title + Select input dropdown field */}
-
-      <div className="app__stats">
-        <InfoBox title="Coronavirus Cases" cases={123} total={2000}></InfoBox>
-        <InfoBox title="Recovered" cases={233} total={3000}></InfoBox>
-        <InfoBox title="Deaths"cases={273} total={6000}></InfoBox>
-        {/*InfoBox title="Coronavirus cases" */}
-        {/*InfoBox title="Recovery" */}
-        {/*InfoBox title="" */}
-      </div>
-
-      {/*Table*/}
-      {/*Graph */}
-
-      {/*Map */}
+      <Card className="app_right">
+        <CardContent>
+          {/*Table*/}
+          <h3>Live Cases by Country</h3>
+          {/*Graph */}
+          <h3>Worldwide new cases</h3>
+        </CardContent>
+      </Card>
     </div>
   );
 }

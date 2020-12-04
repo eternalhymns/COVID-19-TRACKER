@@ -10,13 +10,25 @@
   align-items: center; /*the text drops down a little bit */
   margin-bottom: 20px; /*margine: outside of the element  padding: inside of the element*/
 }
-.app__stats{
-  display:flex;
+.app__stats {
+  display: flex;
   justify-content: space-between;
 }
+.app {
+  display: flex;
+  justify-content: space-evenly;
+  padding:20px
+}
 
-body{
-  background-color: #f5f6fa; 
-  
+.app__left{
+  flex:0.9;
+}
+@media (max-width:990px){
+  .app{
+    flex-direction: column;
+  }
+}
 
+body {
+  background-color: #f5f6fa;
 }
