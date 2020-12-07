@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import Table from "./Table";
+import LineGraph from "./LineGraph"
 import { sortData } from "./util";
 import {
   MenuItem,
@@ -130,7 +131,7 @@ function App() {
           {/* in the table, i will parse  */}
           <Table countries={tableData} />
           <h3>Live Cases by Country</h3>
-          {/*Graph */}
+          <LineGraph/>
           <h3>Worldwide new cases</h3>
         </CardContent>
       </Card>
