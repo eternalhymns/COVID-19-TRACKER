@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
+import 'leaflet/dist/leaflet.css';
 function App() {
   // STATE = How to write variable in REACT >>>>
   // REQUEST URL: https://disease.sh/v3/covid-19/countries
